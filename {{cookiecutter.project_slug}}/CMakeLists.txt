@@ -5,6 +5,8 @@ include(cmake/base.cmake)
 include(cmake/project_options.cmake)
 include(cmake/conan.cmake)
 
-conan()
+conan(
+    # PACKAGES
+)
 
 add_subdirectory(src)
