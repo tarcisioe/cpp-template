@@ -4,7 +4,7 @@ set(CONAN_CMAKE_URL "https://github.com/conan-io/cmake-conan/raw/v0.15/conan.cma
 function(ensure_conan_cmake)
     # Ensure conan.cmake is downloaded.
     if(NOT EXISTS "${CONAN_CMAKE_PATH}")
-        message(STATUS "Downloading conan.camke from ${CONAN_CMAKE_URL}")
+        message(STATUS "Downloading conan.cmake from ${CONAN_CMAKE_URL}")
         file(DOWNLOAD "${CONAN_CMAKE_URL}" "${CONAN_CMAKE_PATH}")
     endif()
 endfunction()
