@@ -1,8 +1,9 @@
 C++ Cookiecutter Template
 =========================
 
-This is a cookiecutter template for a C++ project using CMake and Conan.  It is
-heavily influenced by a [similar project by Jason
+This is a [cookiecutter](https://github.com/cookiecutter/cookiecutter) template
+for a C++ project using [CMake](https://cmake.org) and [Conan](conan.io).  It
+is heavily influenced by a [similar project by Jason
 Turner](https://github.com/lefticus/cpp_starter_project). The main differences
 are:
 
