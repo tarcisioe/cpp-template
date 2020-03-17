@@ -1,7 +1,7 @@
 # Give the user an option to disable treating warnings as errors.
 option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors." ON)
 
-set(CLANG_WARNINGS
+set(CLANG_BASE_WARNINGS
     -Wall
     -Wextra
     -Wpedantic
@@ -18,8 +18,8 @@ set(CLANG_WARNINGS
     -Wunused
 )
 
-set(GCC_WARNINGS
-    ${CLANG_WARNINGS}
+set(GCC_BASE_WARNINGS
+    ${CLANG_BASE_WARNINGS}
     -Wduplicated-branches
     -Wduplicated-cond
     -Wlogical-op
@@ -27,42 +27,76 @@ set(GCC_WARNINGS
     -Wuseless-cast
 )
 
-function(set_target_base_warnings target)
-    set(WERROR "")
+function(set_target_warnings target)
+    # Set warnings for a target
+    #
+    # Args:
+    #     target: The target to set the warnings on.
+    # Keyword args:
+    #     UNKNOWN_MESSAGE: A message to print as a warning if the compiler is unknown.
+    #     MSVC: The list of MSVC warning flags to set.
+    #     CLANG: The list of Clang warning flags to set.
+    #     GCC: The list of GCC warning flags to set.
 
-    if(WARNINGS_AS_ERRORS)
-        if(MSVC)
-            set(WERROR /WX)
-        elseif(
-            CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR
-            CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
-        )
-            set(WERROR -Werror)
-        else()
-            # Unknown compiler.
-            message(WARNING "Compiler is not known, cannot set warnings as errors.")
-        endif()
-    endif()
-
-    set(WARNINGS "")
+    # Parse keyword arguments
+    cmake_parse_arguments(
+        PARSE_ARGV
+            1
+        WARNINGS
+        ""
+        "TARGET;UNKNOWN_MESSAGE"
+        "MSVC;CLANG;GCC"
+    )
 
     if(MSVC)
-        # TODO: MSVC warnings are not implemented yet.
-        set(WARNINGS "")
-        message(WARNING "MSVC warnings are not set yet.")
+        set(warnings ${WARNINGS_MSVC})
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        set(WARNINGS ${CLANG_WARNINGS})
+        set(warnings ${WARNINGS_CLANG})
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        set(WARNINGS ${GCC_WARNINGS})
+        set(warnings ${WARNINGS_GCC})
     else()
-        # Unknown compiler.
-        message(WARNING "Compiler is not known, cannot set warnings.")
+        # Unknown compiler, warn user.
+        message(WARNING "${UNKNOWN_MESSAGE}")
     endif()
 
     target_compile_options(
         ${target}
             INTERFACE
-                ${WARNINGS}
-                ${WERROR}
+                ${warnings}
     )
+endfunction()
+
+function(set_target_base_warnings target)
+    # TODO: Define MSVC warning list. For now, we warn.
+    if(MSVC)
+        message(WARNING "MSVC warnings are not being set yet.")
+    endif()
+
+    # Set the base warnings as defined in the constants.
+    set_target_warnings(
+        ${target}
+            MSVC
+                ""
+            CLANG
+                ${CLANG_BASE_WARNINGS}
+            GCC
+                ${GCC_BASE_WARNINGS}
+            UNKNOWN_MESSAGE
+                "Compiler is not known, cannot set warnings."
+    )
+
+    # Set the warnings-as-errors flag depending on the compiler.
+    if(WARNINGS_AS_ERRORS)
+        set_target_warnings(
+            ${target}
+                MSVC
+                    "/WX"
+                CLANG
+                    "-Werror"
+                GCC
+                    "-Werror"
+                UNKNOWN_MESSAGE
+                    "Compiler is not known, cannot set warnings as errors."
+        )
+    endif()
 endfunction()
