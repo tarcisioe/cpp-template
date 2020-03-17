@@ -7,11 +7,16 @@ function(ensure_conan_cmake)
         message(STATUS "Downloading conan.camke from ${CONAN_CMAKE_URL}")
         file(DOWNLOAD "${CONAN_CMAKE_URL}" "${CONAN_CMAKE_PATH}")
     endif()
-
-    include("${CONAN_CMAKE_PATH}")
 endfunction()
 
-function(conan)
+macro(run_conan)
+    # Run conan. This needs to be a macro because `conan_cmake_run` includes
+    # files.
+    #
+    # Keyword args:
+    #     PACKAGES: List of packages to download with Conan.
+    #     EXTRA_OPTIONS: Extra options for conan.
+
     # Parse keyword arguments
     cmake_parse_arguments(
         CONAN
@@ -20,8 +25,6 @@ function(conan)
         "PACKAGES;EXTRA_OPTIONS"
         ${ARGN}
     )
-
-    ensure_conan_cmake()
 
     message("${PACKAGES}")
 
@@ -35,4 +38,13 @@ function(conan)
         BUILD
             missing
     )
-endfunction()
+endmacro()
+
+macro(conan)
+    # Wrapper to run conan ensuring that `conan.cmake` is present.
+    # Arguments are forwarded to `run_conan`.
+
+    ensure_conan_cmake()
+    include("${CONAN_CMAKE_PATH}")
+    run_conan(${ARGN})
+endmacro()
