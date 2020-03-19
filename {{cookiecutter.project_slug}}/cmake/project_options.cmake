@@ -1,3 +1,5 @@
+include_guard()
+
 # A target that has the basic compiler options we wish to set for every other
 # target.
 # This doesn't produce any object, but transitively enables important options

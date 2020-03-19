@@ -1,3 +1,5 @@
+include_guard()
+
 # Give the user an option to disable treating warnings as errors.
 option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors." ON)
 
