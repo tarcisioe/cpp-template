@@ -1,6 +1,8 @@
 include_guard()
 
 # Give the user an option to disable treating warnings as errors.
+include(cmake/compilers.cmake)
+
 option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors." ON)
 
 set(CLANG_BASE_WARNINGS
@@ -50,11 +52,11 @@ function(set_target_warnings target)
         "MSVC;CLANG;GCC"
     )
 
-    if(MSVC)
+    if(USING_MSVC)
         set(warnings ${WARNINGS_MSVC})
-    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    elseif(USING_CLANG)
         set(warnings ${WARNINGS_CLANG})
-    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    elseif(USING_GCC)
         set(warnings ${WARNINGS_GCC})
     else()
         # Unknown compiler, warn user.
