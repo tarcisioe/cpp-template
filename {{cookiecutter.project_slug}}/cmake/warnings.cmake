@@ -112,7 +112,6 @@ function(set_target_warnings target)
 endfunction()
 
 function(set_target_base_warnings target)
-    # TODO: Define MSVC warning list. For now, we warn.
     # Set the base warnings as defined in the constants.
     set_target_warnings(
         ${target}
