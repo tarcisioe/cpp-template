@@ -1,9 +1,8 @@
 include_guard()
 
-# Give the user an option to disable treating warnings as errors.
-include(cmake/compilers.cmake)
-
 option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors." ON)
+
+include(cmake/compilers.cmake)
 
 # Thanks @lefticus for the translation of the MSVC warnings, phew!
 set(MSVC_BASE_WARNINGS
