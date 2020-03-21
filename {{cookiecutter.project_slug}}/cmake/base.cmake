@@ -18,3 +18,5 @@ if(NOT CMAKE_BUILD_TYPE)
         FORCE
     )
 endif()
+
+include(cmake/static_analyzers.cmake)
