@@ -19,3 +19,6 @@ target_compile_features(
 # Enable the base warnings.
 include(cmake/warnings.cmake)
 set_target_base_warnings(project_options)
+
+include(cmake/sanitizers.cmake)
+enable_sanitizers(project_options)
