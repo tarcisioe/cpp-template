@@ -19,4 +19,5 @@ if(NOT CMAKE_BUILD_TYPE)
     )
 endif()
 
+include(cmake/ccache.cmake)
 include(cmake/static_analyzers.cmake)

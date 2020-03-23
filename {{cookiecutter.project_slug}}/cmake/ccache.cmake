@@ -1,0 +1,11 @@
+option(ENABLE_CCACHE "Enable ccache if available." ON)
+
+if(ENABLE_CCACHE)
+    find_program(CCACHE ccache)
+    if(CCACHE)
+        message(STATUS "ccache found and enabled.")
+        set(CMAKE_CXX_COMPILER_LAUNCHER ${CCACHE})
+    else()
+        message(WARNING "ccache is enabled but was not found. Not using it.")
+    endif()
+endif()
