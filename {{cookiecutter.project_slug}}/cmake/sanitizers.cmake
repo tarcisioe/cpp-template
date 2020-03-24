@@ -1,6 +1,6 @@
 include_guard()
 
-option(SANITIZER_ADRESS "Enable address sanitizer." FALSE)
+option(SANITIZER_ADDRESS "Enable address sanitizer." FALSE)
 option(SANITIZER_UB "Enable undefined behaviour sanitizer." FALSE)
 option(SANITIZER_THREAD "Enable thread sanitizer." FALSE)
 
@@ -12,14 +12,14 @@ function(enable_sanitizers target)
     # Args:
     #     target: the target to enable sanitizers for.
 
-    if(NOT USING_GCC OR USING_CLANG)
+    if(NOT (USING_GCC OR USING_CLANG))
         return()
     endif()
 
     # Collect enabled sanitizers
     set(sanitizer_list "")
 
-    if(SANITIZER_ADRESS)
+    if(SANITIZER_ADDRESS)
         list(APPEND sanitizer_list "address")
     endif()
 
