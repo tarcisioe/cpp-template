@@ -1,7 +1,7 @@
 include_guard()
 
 set(CONAN_CMAKE_PATH "${CMAKE_BINARY_DIR}/conan.cmake")
-set(CONAN_CMAKE_URL "https://github.com/conan-io/cmake-conan/raw/v0.15/conan.cmake")
+set(CONAN_CMAKE_URL "https://github.com/conan-io/cmake-conan/raw/v0.16.1/conan.cmake")
 
 function(ensure_conan_cmake)
     # Ensure conan.cmake is downloaded.
