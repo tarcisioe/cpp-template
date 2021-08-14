@@ -13,7 +13,7 @@ add_library(
 target_compile_features(
     project_options
         INTERFACE
-            cxx_std_17
+            cxx_std_20
 )
 
 # Enable the base warnings.
